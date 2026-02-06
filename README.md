@@ -32,10 +32,12 @@ https://raw.githubusercontent.com/balsama/bdb-map/refs/heads/main/public/bdb-nei
 
 The app needs location permission to check if you're inside the boundary. Tap **"Check Location"** to trigger the browser's permission prompt.
 
-### If you previously denied access
+### If you get "Location denied" on iPhone
 
-**iPhone (Safari):** Settings → Safari → Clear History and Website Data (or go to Settings → Safari → Advanced → Website Data, find the app's domain, swipe to delete). Then reopen the app and tap "Check Location."
+1. **Open in Safari first** — If you added the app to your home screen, open the URL directly in Safari (type it in or use a link) instead of tapping the home screen icon. Standalone/PWA mode can block the prompt.
+2. **Reset permissions** — Settings → Safari → Clear History and Website Data (or Settings → Safari → Advanced → Website Data → remove the site)
+3. **Check Location Services** — Settings → Privacy & Security → Location Services → ensure it's On and Safari is allowed
 
-**iPhone (Chrome):** Settings → Chrome → Site Settings → Location → find the site → set to "Allow"
+### If you previously denied on Android
 
-**Android (Chrome):** Tap the lock/info icon in the address bar → Permissions → Location → Allow
+**Chrome:** Tap the lock/info icon in the address bar → Permissions → Location → Allow

@@ -59,7 +59,7 @@ function handleLocationError(err) {
   console.warn('Geolocation error:', err);
   let msg = 'Unable to get location';
   if (err.code === 1) {
-    msg = 'Location access denied';
+    msg = 'Location denied. Open in Safari (not home screen), or Settings → Safari → Clear History to reset.';
   } else if (err.code === 2) {
     msg = 'Location unavailable';
   } else if (err.code === 3) {
@@ -76,10 +76,11 @@ function requestLocation() {
     return;
   }
 
+  // enableHighAccuracy: false can help on iOS - precise GPS may trigger stricter permission flow
   navigator.geolocation.getCurrentPosition(
     (pos) => updateLocation(pos.coords.latitude, pos.coords.longitude),
     handleLocationError,
-    { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
+    { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
   );
 }
 
