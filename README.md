@@ -27,3 +27,15 @@ Then open http://localhost:3000 (or :8000) in your browser. On a phone, use your
 
 Boundary data is loaded from:
 https://raw.githubusercontent.com/balsama/bdb-map/refs/heads/main/public/bdb-neighborhoods.geojson
+
+## Location access (for users)
+
+The app needs location permission to check if you're inside the boundary. Tap **"Check Location"** to trigger the browser's permission prompt.
+
+### If you previously denied access
+
+**iPhone (Safari):** Settings → Safari → Clear History and Website Data (or go to Settings → Safari → Advanced → Website Data, find the app's domain, swipe to delete). Then reopen the app and tap "Check Location."
+
+**iPhone (Chrome):** Settings → Chrome → Site Settings → Location → find the site → set to "Allow"
+
+**Android (Chrome):** Tap the lock/info icon in the address bar → Permissions → Location → Allow

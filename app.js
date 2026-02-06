@@ -133,12 +133,12 @@ async function loadBoundary() {
       map.fitBounds(boundaryLayer.getBounds(), { padding: [30, 30] });
     }
 
-    // Now get user location
-    requestLocation();
+    // Don't auto-request location - mobile browsers require a user gesture (tap) to show
+    // the permission prompt. Wait for user to tap "Check Location" instead.
+    setStatus('unknown', 'Tap "Check Location" to see if you\'re inside the boundary');
   } catch (err) {
     console.error('Failed to load boundary:', err);
     setStatus('error', 'Failed to load boundary');
-    requestLocation();
   }
 }
 
