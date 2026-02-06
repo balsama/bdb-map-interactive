@@ -1,0 +1,14 @@
+{
+  "name": "bdb-boundary",
+  "version": "1.0.0",
+  "description": "Big Day Boston birding competition boundary check",
+  "scripts": {
+    "start": "serve -s . -l $PORT"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}

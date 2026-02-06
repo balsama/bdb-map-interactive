@@ -27,7 +27,3 @@ Then open http://localhost:3000 (or :8000) in your browser. On a phone, use your
 
 Boundary data is loaded from:
 https://raw.githubusercontent.com/balsama/bdb-map/refs/heads/main/public/bdb-neighborhoods.geojson
-
-## Deployment
-
-Deploy the contents of this folder to any static host (Netlify, Vercel, GitHub Pages, etc.). No build step required.
