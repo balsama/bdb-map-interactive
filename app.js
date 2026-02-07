@@ -59,7 +59,7 @@ function handleLocationError(err) {
   console.warn('Geolocation error:', err);
   let msg = 'Unable to get location';
   if (err.code === 1) {
-    msg = 'Location denied. Open in Safari (not home screen), or Settings → Safari → Clear History to reset.';
+    msg = 'Try Private/Incognito mode for a fresh prompt, or Settings → Safari → Clear History to reset.';
   } else if (err.code === 2) {
     msg = 'Location unavailable';
   } else if (err.code === 3) {
@@ -76,12 +76,46 @@ function requestLocation() {
     return;
   }
 
-  // enableHighAccuracy: false can help on iOS - precise GPS may trigger stricter permission flow
-  navigator.geolocation.getCurrentPosition(
-    (pos) => updateLocation(pos.coords.latitude, pos.coords.longitude),
-    handleLocationError,
-    { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 }
-  );
+  if (!window.isSecureContext) {
+    setStatus('error', 'Location requires HTTPS. Please use https:// to open this app.');
+    return;
+  }
+
+  const opts = { enableHighAccuracy: false, timeout: 15000, maximumAge: 60000 };
+
+  const onSuccess = (pos) => {
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+    }
+    updateLocation(pos.coords.latitude, pos.coords.longitude);
+  };
+  const onError = (err) => {
+    if (watchId !== null) {
+      navigator.geolocation.clearWatch(watchId);
+      watchId = null;
+    }
+    handleLocationError(err);
+  };
+
+  // Try getCurrentPosition first; on iOS, watchPosition sometimes triggers prompt when getCurrentPosition doesn't
+  let watchId = null;
+  navigator.geolocation.getCurrentPosition(onSuccess, (err) => {
+    if (err.code === 1) {
+      watchId = navigator.geolocation.watchPosition(onSuccess, onError, opts);
+      setTimeout(() => {
+        if (watchId !== null) {
+          navigator.geolocation.clearWatch(watchId);
+          watchId = null;
+          if (statusEl.classList.contains('status-unknown')) {
+            handleLocationError(err);
+          }
+        }
+      }, 3000);
+    } else {
+      handleLocationError(err);
+    }
+  }, opts);
 }
 
 function initMap() {
@@ -148,12 +182,12 @@ function init() {
   loadBoundary();
 }
 
-// Register service worker for PWA
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(() => {});
-  });
-}
+// Service worker disabled while debugging iOS geolocation - SW may affect permission context
+// if ('serviceWorker' in navigator) {
+//   window.addEventListener('load', () => {
+//     navigator.serviceWorker.register('./sw.js').catch(() => {});
+//   });
+// }
 
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
